@@ -10,7 +10,7 @@ function App() {
     <div>
       <BrowserRouter> 
         <Route exact path="/" component={MainPage} />
-        <Route path="coins/:id" component={CoinDetailPage} />
+        <Route path="/coins/:id" component={CoinDetailPage} />
       </BrowserRouter>
 
      

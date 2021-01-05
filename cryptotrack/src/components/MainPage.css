@@ -6,6 +6,13 @@
   color: #fff;
 }
 
+
+.page-header {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  
+}
+
 .search-bar {
   margin-bottom: 32px;
   display: flex;
@@ -15,19 +22,12 @@
   justify-content: center;
   align-items: center; */
 }
-
-.page-header {
-  margin-top: 32px;
-  margin-bottom: 32px;
-  
-}
-
 .search-input {
   padding-left: 16px;
   width: 300px;
   height: 50px;
   border-radius: 5px;
-  background-image: linear-gradient(-225deg, #12c2e9 0%, #c471ed 48%, #4801ff 100%);
+  /* background-image: linear-gradient(-225deg, #12c2e9 0%, #c471ed 48%, #4801ff 100%); */
   color: #e2e2e2;
 }
 
