@@ -1,14 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import Coin from './Coin';
 import './MainPage.css';
+import './Coin.css'
 import coinGecko from '../api/coinGecko';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 export default function MainPage({}) {
   const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [sortRankAscending, setSortRankAscending] = useState(true);
+  const [sortNameAscending, setSortNameAscending] = useState(true);
+  const [sortPriceAscending, setSortPriceAscending] = useState(true);
+  const [sortHourAscending, setSortHourAscending] = useState(true);
+  const [sortDayAscending, setSortDayAscending] = useState(true);
+  const [sortWeekAscending, setSortWeekAscending] = useState(true);
+  const [sortVolumeAscending, setSortVolumeAscending] = useState(true);
+  const [sortMarketCapAscending, setSortMarketCapAscending] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,8 +30,8 @@ export default function MainPage({}) {
         params: {
           vs_currency: 'usd',
           order: 'market_cap_desc',
-          // per_page: 100,
-          // page: 1,
+          per_page: 50,
+          page: pageNumber,
           sparkline: true,
           price_change_percentage: '1h,24h,7d'
         }
@@ -30,15 +43,113 @@ export default function MainPage({}) {
   }, []);
 
   useEffect(() => {
-    console.log("coins are changed")
-  }, [coins])
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await coinGecko.get(`/coins/markets`, {
+        params: {
+          vs_currency: 'usd',
+          order: 'market_cap_desc',
+          per_page: 50,
+          page: pageNumber,
+          sparkline: true,
+          price_change_percentage: '1h,24h,7d'
+        }
+      });
+      setCoins(res.data)
+      setLoading(false)
+    }
+    fetchData()
+  }, [pageNumber])
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value)
   }
 
   const sortByRank = (e) => {
-    const updateCoins = coins.sort((a,b) => (a.market_cap_rank > b.market_cap_rank) ? -1 : 1);
+    let updateCoins;
+    if(sortRankAscending) {
+      updateCoins = coins.sort((a,b) => (a.market_cap_rank > b.market_cap_rank) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.market_cap_rank > b.market_cap_rank) ? 1 : -1);
+    }
+    setSortRankAscending(!sortRankAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByName = (e) => {
+    let updateCoins;
+    if(sortNameAscending) {
+      updateCoins = coins.sort((a,b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+    }
+    setSortNameAscending(!sortNameAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByPrice = (e) => {
+    let updateCoins;
+    if(sortPriceAscending) {
+      updateCoins = coins.sort((a,b) => (a.current_price > b.current_price) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.current_price > b.current_price) ? 1 : -1);
+    }
+    setSortPriceAscending(!sortPriceAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByHour = (e) => {
+    let updateCoins;
+    if(sortHourAscending) {
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_1h_in_currency > b.price_change_percentage_1h_in_currency) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_1h_in_currency > b.price_change_percentage_1h_in_currency) ? 1 : -1);
+    }
+    setSortHourAscending(!sortHourAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByDay = (e) => {
+    let updateCoins;
+    if(sortDayAscending) {
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_24h_in_currency > b.price_change_percentage_24h_in_currency) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_24h_in_currency > b.price_change_percentage_24h_in_currency) ? 1 : -1);
+    }
+    setSortDayAscending(!sortDayAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByWeek = (e) => {
+    let updateCoins;
+    if(sortWeekAscending) {
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_7d_in_currency > b.price_change_percentage_7d_in_currency) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.price_change_percentage_7d_in_currency > b.price_change_percentage_7d_in_currency) ? 1 : -1);
+    }
+    setSortWeekAscending(!sortWeekAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByVolume = (e) => {
+    let updateCoins;
+    if(sortVolumeAscending) {
+      updateCoins = coins.sort((a,b) => (a.total_volume > b.total_volume) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.total_volume > b.total_volume) ? 1 : -1);
+    }
+    setSortVolumeAscending(!sortVolumeAscending)
+    setCoins([...updateCoins])
+  }
+
+  const sortByMarketCap = (e) => {
+    let updateCoins;
+    if(sortMarketCapAscending) {
+      updateCoins = coins.sort((a,b) => (a.market_cap > b.market_cap) ? -1 : 1);
+    }else{
+      updateCoins = coins.sort((a,b) => (a.market_cap > b.market_cap) ? 1 : -1);
+    }
+    setSortMarketCapAscending(!sortMarketCapAscending)
     setCoins([...updateCoins])
   }
 
@@ -47,39 +158,41 @@ export default function MainPage({}) {
   return (
     <div className='coin-app'>
       <h1 className='page-header'>Crypto Tracker</h1>
-      <div className='search-row'>
-        <div> </div>
-        <div className='search-bar'>
-          <form>
-            <input 
-              type='text'
-              placeholder='Search'
-              className='search-input'
-              onChange={handleSearchChange}
-            />
-          </form> 
-        </div>
+      <div className='search-bar'>
+        <form>
+          <input 
+            type='text'
+            placeholder='Search'
+            className='search-input'
+            onChange={handleSearchChange}
+          />
+        </form> 
+      </div>
+      <div className='pagination-button'>
+        <ButtonGroup color="primary" aria-label="outlined primary button group">
+          <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
+          <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
+        </ButtonGroup>
       </div>
       <div className='coin-list'>
         <div className='coin-list-header' >
           <div className='coin-row'>
             <div className='coin'>
-              <span className='coin-market-cap-rank' onClick={sortByRank}>#</span>
-              <h1 className='coin-name'>Coin</h1>
-              <span className='coin-symbol'> </span>
+              <span className='coin-market-cap-rank' onClick={sortByRank} style={{cursor: 'pointer' }}>#</span>
+              <h1 className='coin-name' onClick={sortByName} style={{cursor: 'pointer' }}>Coin</h1>
             </div>
             <div className='coin-data' style={{justifyContent: 'normal'}}>
-              <span className='coin-price'>Price</span>
-              <span className='coin-percent'>1h</span>
-              <span className='coin-percent'>24h</span>
-              <span className='coin-percent'>7d</span>
-              <span className='coin-volume'>24h Volume</span>
-              <span className='coin-market-cap' style={{transform: 'translate(20px, 0px)'}}>Mkt Cap</span>
+              <span className='coin-price' onClick={sortByPrice} style={{cursor: 'pointer' }}>Price</span>
+              <span className='coin-percent' onClick={sortByHour} style={{cursor: 'pointer' }}>1h</span>
+              <span className='coin-percent' onClick={sortByDay} style={{cursor: 'pointer' }}>24h</span>
+              <span className='coin-percent' onClick={sortByWeek} style={{cursor: 'pointer' }}>7d</span>
+              <span className='coin-volume' onClick={sortByVolume} style={{cursor: 'pointer' }}>24h Volume</span>
+              <span className='coin-market-cap' style={{transform: 'translate(20px, 0px)', cursor: 'pointer'}} onClick={sortByMarketCap} >Mkt Cap</span>
             </div>
           </div>
         </div>
         {loading ? 
-          <CircularProgress color="secondary" />
+          <CircularProgress className='loading-bar' color="secondary" />
         : filteredCoins.map((coin) => (
           <Coin
             key={coin.id}
