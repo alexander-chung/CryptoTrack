@@ -21,6 +21,8 @@
 }
 
 .coin-list {
+  position: relative;
+  margin: 0 auto;
   padding-bottom: 30px;
   
 }
@@ -63,12 +65,13 @@
 }
 
 .coin-market-cap{
-  margin-right: auto;
+  width: 120px;
+  margin-right: 20px;
+  text-align: center;
 }
 
 .coin-percent {
   width: 80px;
-  text-align: end;
 }
 
 .red {

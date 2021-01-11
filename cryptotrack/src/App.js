@@ -1,20 +1,22 @@
-
 import './App.css';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {BrowserRouter,  Route} from 'react-router-dom';
 import MainPage from './components/MainPage';
 import CoinDetailPage from './components/CoinDetailPage'
+require('dotenv').config();
 
 function App() {
-  
-  return (
-    <div className="main-app">
-      <BrowserRouter> 
-        <Route exact path="/" component={MainPage} />
-        <Route path="/coins/:id" component={CoinDetailPage} />
-      </BrowserRouter>
 
-     
-    </div>
+  return (
+    <>
+      <div className="main-app">
+        <BrowserRouter>
+          <Route exact path="/"
+            component={MainPage}/>
+          <Route path="/coins/:id"
+            component={CoinDetailPage}/>
+        </BrowserRouter>
+      </div>
+    </>
   );
 }
 

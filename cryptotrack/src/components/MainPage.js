@@ -1,13 +1,19 @@
 import React, {useState, useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 import Coin from './Coin';
+import coinGecko from '../api/coinGecko';
+
 import './MainPage.css';
 import './Coin.css'
-import coinGecko from '../api/coinGecko';
+
+import { useAuth0 } from '@auth0/auth0-react';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+
 
 export default function MainPage({}) {
   const [coins, setCoins] = useState([]);
@@ -153,20 +159,60 @@ export default function MainPage({}) {
     setCoins([...updateCoins])
   }
 
-  const filteredCoins = coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase()))
+  const filteredCoins = coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase()))  
+
+  const LoginButton = () => {
+    const { loginWithRedirect } = useAuth0();
   
+    return (
+      <Button variant="contained" color="primary" className='login-button' onClick={() => loginWithRedirect()}>
+        Log in
+      </Button>
+    )
+  }
+
+  const LogoutButton = () => {
+    const { logout } = useAuth0();
+
+    return (
+      <Button variant="contained" color="primary" className='logout-button' onClick={() => logout()}>
+        Log out
+      </Button>
+    )
+  }
+
+  const history = useHistory();
+  const returnToHome = () => {
+    history.push("/")
+    window.location.reload()
+  }
+
+  const { user, isAuthenticated } = useAuth0();
+
   return (
     <div className='coin-app'>
-      <h1 className='page-header'>Crypto Tracker</h1>
-      <div className='search-bar'>
-        <form>
-          <input 
-            type='text'
-            placeholder='Search'
-            className='search-input'
-            onChange={handleSearchChange}
-          />
-        </form> 
+      <div className='nav-bar-first'>
+        <div className='auth-buttons'>
+          <div></div>
+          {isAuthenticated ? 
+          <div className="user-greetings">
+            <img src={user.picture} alt={user.name} style={{height: '35px', width: '35px', marginRight: '10px'}}/>
+            <LogoutButton />
+          </div>
+          : <LoginButton />
+          }
+        </div>
+        <div className='nav-bar-second'>
+          <div className='page-header' onClick={returnToHome}>CryptoTracker</div>
+          <div className='search-bar'>
+              <input 
+                type='text'
+                placeholder='Search'
+                className='search-input'
+                onChange={handleSearchChange}
+              />
+          </div>
+        </div>
       </div>
       <div className='pagination-button'>
         <ButtonGroup color="primary" aria-label="outlined primary button group">
@@ -187,7 +233,7 @@ export default function MainPage({}) {
               <span className='coin-percent' onClick={sortByDay} style={{cursor: 'pointer' }}>24h</span>
               <span className='coin-percent' onClick={sortByWeek} style={{cursor: 'pointer' }}>7d</span>
               <span className='coin-volume' onClick={sortByVolume} style={{cursor: 'pointer' }}>24h Volume</span>
-              <span className='coin-market-cap' style={{transform: 'translate(20px, 0px)', cursor: 'pointer'}} onClick={sortByMarketCap} >Mkt Cap</span>
+              <span className='coin-market-cap' style={{transform: 'translate(10px, 0px)', cursor: 'pointer'}} onClick={sortByMarketCap} >Mkt Cap</span>
             </div>
           </div>
         </div>

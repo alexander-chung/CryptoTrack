@@ -13,7 +13,7 @@ export default function CoinDetailPage() {
     return data.map(price => {
       return {
         t: price[0],
-        y: price[1].toFixed(2)
+        y: price[1].toFixed(7)
       }
     })
   }
@@ -59,7 +59,7 @@ export default function CoinDetailPage() {
 
   return (
     <div>
-      <CoinChart coinData={coinData}/>
+      <CoinChart id={id} coinData={coinData}/>
       <CoinDetails />
     </div>
   )

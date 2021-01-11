@@ -1,504 +1,141 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
+import {Line} from '@reactchartjs/react-chart.js'
 import './CoinChart.css';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import { Chart } from 'react-chartjs-2';
 
-export default function CoinChart({coinData}) {
+
+
+export default function CoinChart({id, coinData}) {
   const {day, week, month, details} = coinData
-  const data = [
-    {
-      "id": "japan",
-      "color": "hsl(239, 70%, 50%)",
-      "data": [
-        {
-          "x": 0,
-          "y": 172
-        },
-        {
-          "x": 1,
-          "y": 136
-        },
-        {
-          "x": 2,
-          "y": 2
-        },
-        {
-          "x": 3,
-          "y": 5
-        },
-        {
-          "x": 4,
-          "y": 231
-        },
-        {
-          "x": 5,
-          "y": 255
-        },
-        {
-          "x": 6,
-          "y": 221
-        },
-        {
-          "x": 7,
-          "y": 28
-        },
-        {
-          "x": 8,
-          "y": 42
-        },
-        {
-          "x": 9,
-          "y": 68
-        },
-        {
-          "x": 10,
-          "y": 236
-        },
-        {
-          "x": 11,
-          "y": 158
-        },
-        {
-          "x": 12,
-          "y": 183
-        },
-        {
-          "x": 13,
-          "y": 151
-        },
-        {
-          "x": 14,
-          "y": 157
-        },
-        {
-          "x": 15,
-          "y": 126
-        },
-        {
-          "x": 16,
-          "y": 298
-        },
-        {
-          "x": 17,
-          "y": 93
-        },
-        {
-          "x": 18,
-          "y": 120
-        },
-        {
-          "x": 19,
-          "y": 22
-        },
-        {
-          "x": 20,
-          "y": 103
-        },
-        {
-          "x": 21,
-          "y": 170
-        },
-        {
-          "x": 22,
-          "y": 51
-        },
-        {
-          "x": 23,
-          "y": 227
-        },
-        {
-          "x": 24,
-          "y": 164
-        },
-        {
-          "x": 25,
-          "y": 22
-        },
-        {
-          "x": 26,
-          "y": 150
-        },
-        {
-          "x": 27,
-          "y": 237
-        },
-        {
-          "x": 28,
-          "y": 39
-        },
-        {
-          "x": 29,
-          "y": 233
-        },
-        {
-          "x": 30,
-          "y": 46
-        },
-        {
-          "x": 31,
-          "y": 30
-        },
-        {
-          "x": 32,
-          "y": 158
-        },
-        {
-          "x": 33,
-          "y": 3
-        },
-        {
-          "x": 34,
-          "y": 224
-        },
-        {
-          "x": 35,
-          "y": 250
-        },
-        {
-          "x": 36,
-          "y": 82
-        },
-        {
-          "x": 37,
-          "y": 23
-        },
-        {
-          "x": 38,
-          "y": 171
-        },
-        {
-          "x": 39,
-          "y": 93
-        },
-        {
-          "x": 40,
-          "y": 92
-        },
-        {
-          "x": 41,
-          "y": 167
-        },
-        {
-          "x": 42,
-          "y": 211
-        },
-        {
-          "x": 43,
-          "y": 126
-        },
-        {
-          "x": 44,
-          "y": 137
-        },
-        {
-          "x": 45,
-          "y": 203
-        },
-        {
-          "x": 46,
-          "y": 181
-        },
-        {
-          "x": 47,
-          "y": 9
-        },
-        {
-          "x": 48,
-          "y": 115
-        },
-        {
-          "x": 49,
-          "y": 4
-        },
-        {
-          "x": 50,
-          "y": 63
-        },
-        {
-          "x": 51,
-          "y": 263
-        },
-        {
-          "x": 52,
-          "y": 207
-        },
-        {
-          "x": 53,
-          "y": 192
-        },
-        {
-          "x": 54,
-          "y": 194
-        },
-        {
-          "x": 55,
-          "y": 284
-        },
-        {
-          "x": 56,
-          "y": 280
-        },
-        {
-          "x": 57,
-          "y": 173
-        },
-        {
-          "x": 58,
-          "y": 121
-        },
-        {
-          "x": 59,
-          "y": 91
-        },
-        {
-          "x": 60,
-          "y": 50
-        },
-        {
-          "x": 61,
-          "y": 147
-        },
-        {
-          "x": 62,
-          "y": 130
-        },
-        {
-          "x": 63,
-          "y": 113
-        },
-        {
-          "x": 64,
-          "y": 75
-        },
-        {
-          "x": 65,
-          "y": 152
-        },
-        {
-          "x": 66,
-          "y": 274
-        },
-        {
-          "x": 67,
-          "y": 180
-        },
-        {
-          "x": 68,
-          "y": 58
-        },
-        {
-          "x": 69,
-          "y": 259
-        },
-        {
-          "x": 70,
-          "y": 289
-        },
-        {
-          "x": 71,
-          "y": 201
-        },
-        {
-          "x": 72,
-          "y": 50
-        },
-        {
-          "x": 73,
-          "y": 203
-        },
-        {
-          "x": 74,
-          "y": 50
-        },
-        {
-          "x": 75,
-          "y": 222
-        },
-        {
-          "x": 76,
-          "y": 54
-        },
-        {
-          "x": 77,
-          "y": 264
-        },
-        {
-          "x": 78,
-          "y": 92
-        },
-        {
-          "x": 79,
-          "y": 250
-        },
-        {
-          "x": 80,
-          "y": 286
-        },
-        {
-          "x": 81,
-          "y": 149
-        },
-        {
-          "x": 82,
-          "y": 77
-        },
-        {
-          "x": 83,
-          "y": 11
-        },
-        {
-          "x": 84,
-          "y": 33
-        },
-        {
-          "x": 85,
-          "y": 230
-        },
-        {
-          "x": 86,
-          "y": 191
-        },
-        {
-          "x": 87,
-          "y": 29
-        },
-        {
-          "x": 88,
-          "y": 167
-        },
-        {
-          "x": 89,
-          "y": 279
-        },
-        {
-          "x": 90,
-          "y": 130
-        },
-        {
-          "x": 91,
-          "y": 285
-        },
-        {
-          "x": 92,
-          "y": 262
-        },
-        {
-          "x": 93,
-          "y": 58
-        },
-        {
-          "x": 94,
-          "y": 64
-        },
-        {
-          "x": 95,
-          "y": 112
-        },
-        {
-          "x": 96,
-          "y": 22
-        },
-        {
-          "x": 97,
-          "y": 82
-        },
-        {
-          "x": 98,
-          "y": 69
-        },
-        {
-          "x": 99,
-          "y": 202
-        },
-        {
-          "x": 100,
-          "y": 195
-        },
-        {
-          "x": 101,
-          "y": 110
-        },
-        {
-          "x": 102,
-          "y": 120
-        },
-        {
-          "x": 103,
-          "y": 62
-        },
-        {
-          "x": 104,
-          "y": 284
-        },
-        {
-          "x": 105,
-          "y": 229
-        },
-        {
-          "x": 106,
-          "y": 194
-        },
-        {
-          "x": 107,
-          "y": 276
-        },
-        {
-          "x": 108,
-          "y": 134
-        },
-        {
-          "x": 109,
-          "y": 192
-        },
-        {
-          "x": 110,
-          "y": 82
-        },
-        {
-          "x": 111,
-          "y": 185
-        },
-        {
-          "x": 112,
-          "y": 26
-        },
-        {
-          "x": 113,
-          "y": 253
-        },
-        {
-          "x": 114,
-          "y": 52
-        },
-        {
-          "x": 115,
-          "y": 14
-        },
-        {
-          "x": 116,
-          "y": 227
-        },
-        {
-          "x": 117,
-          "y": 93
-        },
-        {
-          "x": 118,
-          "y": 144
-        },
-        {
-          "x": 119,
-          "y": 13
-        },
-        {
-          "x": 120,
-          "y": 85
+  const [timeFormat, setTimeFormat] = useState('day')
+
+
+  const formatTime = () => {
+    switch (timeFormat) {
+      case 'day':
+        return day
+      case 'week':
+        return week
+      case 'month':
+        return month
+      default:
+        return day
+    }
+  }
+
+  useEffect(() => {
+    Chart.pluginService.register({
+      afterDraw: function(chart, easing) {
+        if (chart.tooltip._active && chart.tooltip._active.length) {
+          const activePoint = chart.controller.tooltip._active[0];
+          const ctx = chart.ctx;
+          const x = activePoint.tooltipPosition().x;
+          const topY = chart.scales['y-axis-0'].top;
+          const bottomY = chart.scales['y-axis-0'].bottom;
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(x, topY);
+          ctx.lineTo(x, bottomY);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = '#ffffff';
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    });
+  }, [])
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+  const data = {
+    datasets: [
+      {
+        label: '$',
+        data: formatTime(),
+        // backgroundColor: "rgb(64,150,233, 0.1)",
+        borderColor: 'rgb(80,150,255)',
+        borderWidth: 1.5,
+        pointRadius: 0,
+        pointHitRadius: 0
+      },
+    ]
+  }
+  
+  const options = {
+    
+    title: {
+      display: true,
+      text: `${id.charAt(0).toUpperCase() + id.slice(1)} Chart`,
+      fontColor: 'white',
+      fontSize: 18,
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+      callbacks: {
+        label: (tooltipItem, data) =>  {
+          return "Price: " + numberWithCommas(tooltipItem.yLabel.toFixed(2));
+        },
+      }
+   },
+
+   hover: {
+      mode: 'index',
+      intersect: false,
+   },
+    legend: {
+      display: false
+    },
+    animation: {
+      display: true,
+      duration: 500
+    },
+    maintainAspectRatio: false,
+    responsive: true,
+    scales: {
+      xAxes: [{
+          type: "time",
+          time: {
+            tooltipFormat:'MM/DD/YYYY HH:mm',
+          },
+          distribution: "linear",
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            beginAtZero: true,
+            fontColor: "white",
+          },
+        },
+      ],
+      yAxes: [{
+          ticks: {
+            fontColor: "white"
+          },
+          gridLines: {
+            color: "#ffffff",
+          }
         }
       ]
     }
-  ]
+  }
+
   return (
     <>
       <div className='coin-chart'>
-        
+        <ButtonGroup color="primary" aria-label="primary button group" className='history-buttons'>
+            <Button style={{backgroundColor: timeFormat === "day" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('day')}>1d</Button>
+            <Button style={{backgroundColor: timeFormat === "week" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('week')}>7d</Button>
+            <Button style={{backgroundColor: timeFormat === "month" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('month')}>30d</Button>
+        </ButtonGroup>
+        <Line 
+          data={data}
+          options={options}
+          />
       </div>
     </>
   )
