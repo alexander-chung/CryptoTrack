@@ -11,9 +11,14 @@
   position: relative;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-top: solid 1px grey;
+  border-bottom: solid 1px grey;
 }
 
 .nav-bar-second {
@@ -34,13 +39,13 @@
   font-weight: bold
 }
 
-/* .search-bar {
-  
-} */
+.search-bar {
+  margin-bottom: 16px; 
+}
 
 .search-input {
   padding-left: 12px;
-  width: 300px;
+  width: 200px;
   height: 30px;
   border-radius: 5px;
   background-image: #e2e2e2;

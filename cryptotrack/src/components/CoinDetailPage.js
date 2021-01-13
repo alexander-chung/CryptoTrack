@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom';
 import CoinChart from './CoinChart';
 import CoinDetails from './CoinDetails';
 import coinGecko from '../api/coinGecko';
+import NavBar from './NavBar';
 
 
 export default function CoinDetailPage() {
@@ -59,6 +60,7 @@ export default function CoinDetailPage() {
 
   return (
     <div>
+      <NavBar />
       <CoinChart id={id} coinData={coinData}/>
       <CoinDetails />
     </div>

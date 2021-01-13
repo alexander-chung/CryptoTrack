@@ -4,6 +4,8 @@ import './CoinChart.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Chart } from 'react-chartjs-2';
+import Card from '@material-ui/core/Card';
+
 
 
 
@@ -39,7 +41,8 @@ export default function CoinChart({id, coinData}) {
           ctx.moveTo(x, topY);
           ctx.lineTo(x, bottomY);
           ctx.lineWidth = 1;
-          ctx.strokeStyle = '#ffffff';
+          ctx.strokeStyle = "#808080";
+          ctx.setLineDash([5])
           ctx.stroke();
           ctx.restore();
         }
@@ -56,7 +59,7 @@ export default function CoinChart({id, coinData}) {
       {
         label: '$',
         data: formatTime(),
-        // backgroundColor: "rgb(64,150,233, 0.1)",
+        backgroundColor: "rgb(64,150,233, 0.1)",
         borderColor: 'rgb(80,150,255)',
         borderWidth: 1.5,
         pointRadius: 0,
@@ -70,7 +73,7 @@ export default function CoinChart({id, coinData}) {
     title: {
       display: true,
       text: `${id.charAt(0).toUpperCase() + id.slice(1)} Chart`,
-      fontColor: 'white',
+      fontColor: 'black',
       fontSize: 18,
     },
     tooltips: {
@@ -108,16 +111,17 @@ export default function CoinChart({id, coinData}) {
           },
           ticks: {
             beginAtZero: true,
-            fontColor: "white",
+            fontColor: "black",
           },
         },
       ],
       yAxes: [{
           ticks: {
-            fontColor: "white"
+            fontColor: "black",
           },
           gridLines: {
-            color: "#ffffff",
+            color: "black",
+            lineWidth: 0.25
           }
         }
       ]
@@ -126,17 +130,17 @@ export default function CoinChart({id, coinData}) {
 
   return (
     <>
-      <div className='coin-chart'>
+      <Card className='coin-chart'>
         <ButtonGroup color="primary" aria-label="primary button group" className='history-buttons'>
-            <Button style={{backgroundColor: timeFormat === "day" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('day')}>1d</Button>
-            <Button style={{backgroundColor: timeFormat === "week" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('week')}>7d</Button>
-            <Button style={{backgroundColor: timeFormat === "month" ? '#42a4f5' : 'transparent'}} onClick={() => setTimeFormat('month')}>30d</Button>
+            <Button className={timeFormat === "day" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('day')}>1d</Button>
+            <Button className={timeFormat === "week" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('week')}>7d</Button>
+            <Button className={timeFormat === "month" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('month')}>30d</Button>
         </ButtonGroup>
         <Line 
           data={data}
           options={options}
           />
-      </div>
+      </Card>
     </>
   )
 }
