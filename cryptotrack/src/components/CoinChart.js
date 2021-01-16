@@ -4,15 +4,15 @@ import './CoinChart.css';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { Chart } from 'react-chartjs-2';
-import Card from '@material-ui/core/Card';
-
-
 
 
 export default function CoinChart({id, coinData}) {
-  const {day, week, month, details} = coinData
+  const {day, week, month, year, details} = coinData
   const [timeFormat, setTimeFormat] = useState('day')
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   const formatTime = () => {
     switch (timeFormat) {
@@ -22,6 +22,8 @@ export default function CoinChart({id, coinData}) {
         return week
       case 'month':
         return month
+      case 'year':
+        return year
       default:
         return day
     }
@@ -50,10 +52,6 @@ export default function CoinChart({id, coinData}) {
     });
   }, [])
 
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
   const data = {
     datasets: [
       {
@@ -69,13 +67,12 @@ export default function CoinChart({id, coinData}) {
   }
   
   const options = {
-    
-    title: {
-      display: true,
-      text: `${id.charAt(0).toUpperCase() + id.slice(1)} Chart`,
-      fontColor: 'black',
-      fontSize: 18,
-    },
+    // title: {
+    //   display: false,
+    //   text: `${id.charAt(0).toUpperCase() + id.slice(1)} Chart`,
+    //   fontColor: 'black',
+    //   fontSize: 18,
+    // },
     tooltips: {
       mode: 'index',
       intersect: false,
@@ -129,18 +126,17 @@ export default function CoinChart({id, coinData}) {
   }
 
   return (
-    <>
-      <Card className='coin-chart'>
-        <ButtonGroup color="primary" aria-label="primary button group" className='history-buttons'>
-            <Button className={timeFormat === "day" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('day')}>1d</Button>
-            <Button className={timeFormat === "week" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('week')}>7d</Button>
-            <Button className={timeFormat === "month" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('month')}>30d</Button>
-        </ButtonGroup>
-        <Line 
+    <div className='coin-chart'>
+      <ButtonGroup color="primary" aria-label="primary button group" className='history-buttons'>
+          <Button className={timeFormat === "day" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('day')}>1d</Button>
+          <Button className={timeFormat === "week" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('week')}>7d</Button>
+          <Button className={timeFormat === "month" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('month')}>30d</Button>
+          <Button className={timeFormat === "year" ? 'active-button' : 'regular-button'} onClick={() => setTimeFormat('year')}>1Y</Button>
+      </ButtonGroup>
+      <Line 
           data={data}
           options={options}
           />
-      </Card>
-    </>
+    </div>
   )
 }

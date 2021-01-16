@@ -20,9 +20,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import { createFilterOptions } from '@material-ui/lab/Autocomplete';
 import { makeStyles } from "@material-ui/core/styles";
 
-
-
-
 export default function MainPage({}) {
   const [coins, setCoins] = useState([]);
   const [searchData, setSearchData] = useState([])
@@ -60,8 +57,6 @@ export default function MainPage({}) {
     fetchData()
   }, []);
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -81,14 +76,14 @@ export default function MainPage({}) {
     fetchData()
   }, [pageNumber])
 
-  const handleSearchChange = (e) => {
-    console.log(e.target.value)
-    if(e.target.value == null || typeof e.target.value !== 'string'){
-      setSearch("")
-    }else{
-      setSearch(e.target.value)
-    }
-  }
+  // const handleSearchChange = (e) => {
+  //   console.log(e.target.value)
+  //   if(e.target.value == null || typeof e.target.value !== 'string'){
+  //     setSearch("")
+  //   }else{
+  //     setSearch(e.target.value)
+  //   }
+  // }
 
   const sortByRank = (e) => {
     let updateCoins;
@@ -198,7 +193,13 @@ export default function MainPage({}) {
       color: "pink"
     },
     inputRoot: {
-      color: "white"
+      color: "white",
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "grey"
+      },
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "white"
+      },
     },
     option: {
       color: "black"
@@ -208,72 +209,65 @@ export default function MainPage({}) {
   const classes = useStyles()
 
   return (
-    <div className='coin-app'>
+    <>
       <NavBar />
-      <div className='nav-bar-second'>
-        <div className='pagination-button'>
-          <ButtonGroup color="primary" aria-label="outlined primary button group">
-            <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
-            <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
-          </ButtonGroup>
-        </div>
-        <Autocomplete
-          freeSolo
-          classes={classes}
-          filterOptions={filterOptions}
-          options={searchData}
-          getOptionLabel={(option) => option.name}
-          style={{ width: 300 }}
-          onChange={(e, value) => searchSelect(e,value)}
-          renderInput={(params) => <TextField {...params} InputLabelProps={{style: { color: "white"}}} label="Search" variant="outlined"/>}
-          // onInputChange={handleSearchChange}
-        />
-        {/* <div className='search-bar'>
-          <input 
-            type='text'
-            placeholder='Search'
-            className='search-input'
-            onChange={handleSearchChange}
+      <div className='coin-app'>
+        <div className='nav-bar-second'>
+          <div className='pagination-button'>
+            <ButtonGroup color="primary" aria-label="outlined primary button group">
+              <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
+              <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
+            </ButtonGroup>
+          </div>
+          <Autocomplete
+            freeSolo
+            classes={classes}
+            filterOptions={filterOptions}
+            options={searchData}
+            getOptionLabel={(option) => option.name}
+            style={{ width: 300 }}
+            onChange={(e, value) => searchSelect(e,value)}
+            renderInput={(params) => <TextField {...params} InputLabelProps={{style: { color: "white"}}} label="Search" variant="outlined"/>}
           />
-        </div> */}
-      </div>
-      <div className='coin-list'>
-        <div className='coin-list-header' >
-          <div className='coin-row'>
-            <div className='coin'>
-              <span className='coin-market-cap-rank' onClick={sortByRank} style={{cursor: 'pointer' }}>#</span>
-              <h1 className='coin-name' onClick={sortByName} style={{cursor: 'pointer' }}>Coin</h1>
-            </div>
-            <div className='coin-data' style={{justifyContent: 'normal'}}>
-              <span className='coin-price' onClick={sortByPrice} style={{cursor: 'pointer' }}>Price</span>
-              <span className='coin-percent' onClick={sortByHour} style={{cursor: 'pointer' }}>1h</span>
-              <span className='coin-percent' onClick={sortByDay} style={{cursor: 'pointer' }}>24h</span>
-              <span className='coin-percent' onClick={sortByWeek} style={{cursor: 'pointer' }}>7d</span>
-              <span className='coin-volume' onClick={sortByVolume} style={{cursor: 'pointer' }}>24h Volume</span>
-              <span className='coin-market-cap' style={{transform: 'translate(10px, 0px)', cursor: 'pointer'}} onClick={sortByMarketCap} >Mkt Cap</span>
+        </div>
+        <div className='coin-list'>
+          <div className='coin-list-header' >
+            <div className='coin-row'>
+              <div className='coin'>
+                <span className='coin-market-cap-rank' onClick={sortByRank} style={{cursor: 'pointer' }}>#</span>
+                <h1 className='coin-name' onClick={sortByName} style={{cursor: 'pointer' }}>Coin</h1>
+              </div>
+              <div className='coin-data' style={{justifyContent: 'normal'}}>
+                <span className='coin-price' onClick={sortByPrice} style={{cursor: 'pointer' }}>Price</span>
+                <span className='coin-percent' onClick={sortByHour} style={{cursor: 'pointer' }}>1h</span>
+                <span className='coin-percent' onClick={sortByDay} style={{cursor: 'pointer' }}>24h</span>
+                <span className='coin-percent' onClick={sortByWeek} style={{cursor: 'pointer' }}>7d</span>
+                <span className='coin-volume' onClick={sortByVolume} style={{cursor: 'pointer' }}>24h Volume</span>
+                <span className='coin-market-cap' style={{transform: 'translate(10px, 0px)', cursor: 'pointer'}} onClick={sortByMarketCap} >Mkt Cap</span>
+              </div>
             </div>
           </div>
+          {loading ? 
+            <CircularProgress className='loading-bar' color="secondary" />
+          : filteredCoins.map((coin) => (
+            <Coin
+              key={coin.id}
+              coinId={coin.id}
+              coinName={coin.name}
+              coinImage={coin.image}
+              coinSymbol={coin.symbol}
+              coinPrice={coin.current_price}
+              coinVolume={coin.total_volume}
+              pricechange1h={coin.price_change_percentage_1h_in_currency}
+              priceChange24h={coin.price_change_percentage_24h_in_currency}
+              pricechange7d={coin.price_change_percentage_7d_in_currency}
+              marketCap={coin.market_cap}
+              marketCapRank={coin.market_cap_rank}
+            />
+          ))
+          }
         </div>
-        {loading ? 
-          <CircularProgress className='loading-bar' color="secondary" />
-        : filteredCoins.map((coin) => (
-          <Coin
-            key={coin.id}
-            coinId={coin.id}
-            coinName={coin.name}
-            coinImage={coin.image}
-            coinSymbol={coin.symbol}
-            coinPrice={coin.current_price}
-            coinVolume={coin.total_volume}
-            pricechange1h={coin.price_change_percentage_1h_in_currency}
-            priceChange24h={coin.price_change_percentage_24h_in_currency}
-            pricechange7d={coin.price_change_percentage_7d_in_currency}
-            marketCap={coin.market_cap}
-            marketCapRank={coin.market_cap_rank}
-          />
-        ))
-        }
       </div>
-    </div>
+    </>
   )
 }

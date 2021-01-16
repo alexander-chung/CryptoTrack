@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import './Coin.css'
 
 function Coin({coinId, coinName, coinImage, coinSymbol, coinPrice, coinVolume, pricechange1h, priceChange24h, pricechange7d,marketCap, marketCapRank}) {
+  
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
 
   return (
     <Link to={`/coins/${coinId}`} style={{ textDecoration: 'none' }} className='coin-container'>
@@ -14,7 +18,7 @@ function Coin({coinId, coinName, coinImage, coinSymbol, coinPrice, coinVolume, p
           <span className='coin-symbol'>{coinSymbol} </span>
         </div>
         <div className='coin-data'>
-          <span className='coin-price'>${coinPrice}</span>
+          <span className='coin-price'>${numberWithCommas(coinPrice.toFixed(2))}</span>
           {pricechange1h < 0 ? (
             <span className='coin-percent red'>{parseFloat(pricechange1h).toFixed(2)}%</span>
             )

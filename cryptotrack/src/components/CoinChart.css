@@ -2,12 +2,12 @@
   height: 500px;
   width: 1000px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 25px;
   margin-bottom: 50px;
-  /* background-color: #ffffff; */
+  background-color: #fff;
   border-radius: 2px;
-  border: 1px solid #ffffff;
-  padding-bottom: 70px;
+  border: 1px solid #fff;
+  padding-bottom: 65px;
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(255,255,255,0.19);
 }
 
@@ -24,4 +24,43 @@
 .regular-button {
   background-color: transparent;
   color: black!important;
+}
+
+.chart-info-container {
+  display: flex;
+  justify-content: center;
+}
+
+.info-title {
+  color: grey;
+  font-size: 12px;
+}
+
+.info-data {
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.info-danger {
+  color: #F4282D;
+}
+
+.info-success {
+  color: #33C15D;
+}
+
+.chart-info {
+  width:1000px;
+  display: flex;
+  flex-wrap: wrap!important;
+  justify-content: space-around;
+  text-align: left;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.info-box {
+  padding: 1rem;
+  text-align: left;
 }

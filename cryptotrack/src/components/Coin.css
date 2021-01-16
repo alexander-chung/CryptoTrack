@@ -41,6 +41,7 @@
 .coin-symbol {
   text-transform: uppercase;
   font-size: 11px;
+  text-align: left;
 }
 
 .coin-data {
