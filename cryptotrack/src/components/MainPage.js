@@ -15,15 +15,8 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import { makeStyles } from "@material-ui/core/styles";
-
 export default function MainPage({}) {
   const [coins, setCoins] = useState([]);
-  const [searchData, setSearchData] = useState([])
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [sortRankAscending, setSortRankAscending] = useState(true);
@@ -51,7 +44,6 @@ export default function MainPage({}) {
         }),
         coinGecko.get(`/coins/list`)]);
       setCoins(mainData.data)
-      setSearchData(searchData.data.sort(() => Math.random() - 0.5))
       setLoading(false)
     }
     fetchData()
@@ -75,15 +67,6 @@ export default function MainPage({}) {
     }
     fetchData()
   }, [pageNumber])
-
-  // const handleSearchChange = (e) => {
-  //   console.log(e.target.value)
-  //   if(e.target.value == null || typeof e.target.value !== 'string'){
-  //     setSearch("")
-  //   }else{
-  //     setSearch(e.target.value)
-  //   }
-  // }
 
   const sortByRank = (e) => {
     let updateCoins;
@@ -173,63 +156,20 @@ export default function MainPage({}) {
     setCoins([...updateCoins])
   }
 
-  const filterOptions = createFilterOptions({
-    matchFrom: 'start',
-    limit: 1000
-  });
-
-  const filteredCoins = coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase()))  
-
-  const searchSelect = (e, value) => {
-    history.push(`/coins/${value.id}`)
-  }
-
   const history = useHistory();
 
   const { user, isAuthenticated } = useAuth0();
-
-  const useStyles = makeStyles(theme => ({
-    root: {
-      color: "pink"
-    },
-    inputRoot: {
-      color: "white",
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "grey"
-      },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "white"
-      },
-    },
-    option: {
-      color: "black"
-    }
-  }));
-
-  const classes = useStyles()
 
   return (
     <>
       <NavBar />
       <div className='coin-app'>
-        <div className='nav-bar-second'>
           <div className='pagination-button'>
             <ButtonGroup color="primary" aria-label="outlined primary button group">
               <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
               <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
             </ButtonGroup>
           </div>
-          <Autocomplete
-            freeSolo
-            classes={classes}
-            filterOptions={filterOptions}
-            options={searchData}
-            getOptionLabel={(option) => option.name}
-            style={{ width: 300 }}
-            onChange={(e, value) => searchSelect(e,value)}
-            renderInput={(params) => <TextField {...params} InputLabelProps={{style: { color: "white"}}} label="Search" variant="outlined"/>}
-          />
-        </div>
         <div className='coin-list'>
           <div className='coin-list-header' >
             <div className='coin-row'>
@@ -249,7 +189,7 @@ export default function MainPage({}) {
           </div>
           {loading ? 
             <CircularProgress className='loading-bar' color="secondary" />
-          : filteredCoins.map((coin) => (
+          : coins.map((coin) => (
             <Coin
               key={coin.id}
               coinId={coin.id}

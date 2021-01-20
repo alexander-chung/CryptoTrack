@@ -1,5 +1,6 @@
 import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import CurrencyConverter from './CurrencyConverter';
 
 
 export default function CoinDetails( {details}) {
@@ -8,15 +9,44 @@ export default function CoinDetails( {details}) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  const fnum = (x) => {
+    console.log("hello")
+    if(isNaN(x)) return x;
+  
+    if(x < 9999) {
+      return x;
+    }
+  
+    if(x < 1000000) {
+      return Math.round(x/1000) + "K";
+    }
+    if( x < 10000000) {
+      return (x/1000000).toFixed(2) + "M";
+    }
+  
+    if(x < 1000000000) {
+      return Math.round((x/1000000)) + "M";
+    }
+  
+    if(x < 1000000000000) {
+      return Math.round((x/1000000000)) + "B";
+    }
+  
+    return "1T+";
+  }
+
   return (
     <>
     { details ?
     <div>
       <div style={{display: 'flex', justifyContent: 'center', marginBottom: '32px'}}>
         <div style={{float: 'left', width: '1000px'}}>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <img src={details.image} style={{height: '65px', width:'65px', marginLeft: '5px', marginRight: '10px'}}></img>
-            <h1 style={{transform: 'translateY(10px)'}}>{details.name}</h1>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+              <img src={details.image} style={{height: '65px', width:'65px', marginLeft: '5px', marginRight: '10px'}}></img>
+              <h1 style={{transform: 'translateY(10px)'}}>{details.name}</h1>
+            </div>
+            <CurrencyConverter details={details}/>
           </div>
         </div>
       </div>
@@ -49,13 +79,13 @@ export default function CoinDetails( {details}) {
           <div className='info-box'>
             <div className='info-title'>Market Cap</div>
             <div>
-              <span className='info-data'>${numberWithCommas(details.market_cap)}</span>
+              <span className='info-data'>${fnum(details.market_cap)}</span>
             </div>
           </div>
           <div className='info-box'>
             <div className='info-title'>24h volume</div>
             <div>
-              <span className='info-data'>${numberWithCommas(details.total_volume)}</span>
+              <span className='info-data'>${fnum(details.total_volume)}</span>
             </div>
           </div>
         </div>

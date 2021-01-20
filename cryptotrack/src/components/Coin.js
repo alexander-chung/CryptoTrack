@@ -8,6 +8,8 @@ function Coin({coinId, coinName, coinImage, coinSymbol, coinPrice, coinVolume, p
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+
+
   return (
     <Link to={`/coins/${coinId}`} style={{ textDecoration: 'none' }} className='coin-container'>
       <div className='coin-row'>

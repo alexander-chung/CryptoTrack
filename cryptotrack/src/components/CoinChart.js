@@ -61,7 +61,7 @@ export default function CoinChart({id, coinData}) {
         borderColor: 'rgb(80,150,255)',
         borderWidth: 1.5,
         pointRadius: 0,
-        pointHitRadius: 0
+        // pointHitRadius: 0
       },
     ]
   }
@@ -85,7 +85,7 @@ export default function CoinChart({id, coinData}) {
 
    hover: {
       mode: 'index',
-      intersect: false,
+      intersect: true,
    },
     legend: {
       display: false

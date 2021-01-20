@@ -52,6 +52,7 @@
 }
 
 .coin-price {
+  float: left;
   width: 110px;
 }
 
