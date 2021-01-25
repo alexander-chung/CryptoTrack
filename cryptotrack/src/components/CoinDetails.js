@@ -1,9 +1,15 @@
 import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CurrencyConverter from './CurrencyConverter';
+import Button from '@material-ui/core/Button';
+import { useAuth0 } from '@auth0/auth0-react';
+
+import { makeStyles } from "@material-ui/core/styles";
 
 
 export default function CoinDetails( {details}) {
+  const { user, isAuthenticated } = useAuth0();
+
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -35,17 +41,27 @@ export default function CoinDetails( {details}) {
     return "1T+";
   }
 
+  const useStyles = makeStyles(theme => ({
+    root: {
+      height: "40px",
+    },
+  }));
+
+  const classes = useStyles()
+
+
   return (
     <>
     { details ?
     <div>
       <div style={{display: 'flex', justifyContent: 'center', marginBottom: '32px'}}>
         <div style={{float: 'left', width: '1000px'}}>
-          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{display: 'flex', flexDirection: 'row'}}>
               <img src={details.image} style={{height: '65px', width:'65px', marginLeft: '5px', marginRight: '10px'}}></img>
               <h1 style={{transform: 'translateY(10px)'}}>{details.name}</h1>
             </div>
+            <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true}>Add to my portfolio</Button>            
             <CurrencyConverter details={details}/>
           </div>
         </div>

@@ -164,12 +164,12 @@ export default function MainPage({}) {
     <>
       <NavBar />
       <div className='coin-app'>
-          <div className='pagination-button'>
-            <ButtonGroup color="primary" aria-label="outlined primary button group">
-              <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
-              <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
-            </ButtonGroup>
-          </div>
+        <div className='pagination-button'>
+          <ButtonGroup color="primary" aria-label="outlined primary button group">
+            <Button disabled={pageNumber=== 1 ? true : false} onClick={() => setPageNumber(pageNumber - 1)}><NavigateBeforeIcon/></Button>
+            <Button onClick={() => setPageNumber(pageNumber + 1)}><NavigateNextIcon/></Button>
+          </ButtonGroup>
+        </div>
         <div className='coin-list'>
           <div className='coin-list-header' >
             <div className='coin-row'>

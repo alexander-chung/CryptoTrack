@@ -26,26 +26,28 @@ const NavBar = () => {
   }, [])
 
   const LoginButton = () => {
-    const { loginWithRedirect } = useAuth0();
+    const { loginWithRedirect, isAuthenticated } = useAuth0();
     
     const asyncLogin = async () => {
       await loginWithRedirect();
     }
 
     return (
+      !isAuthenticated && (
       <Button variant="contained" color="primary" className='login-button' onClick={asyncLogin}>
         Log in
-      </Button>
+      </Button>)
     )
   }
 
   const LogoutButton = () => {
-    const { logout } = useAuth0();
+    const { logout , isAuthenticated} = useAuth0();
 
     return (
+      isAuthenticated && (
       <Button variant="contained" color="primary" className='logout-button' onClick={() => logout()}>
         Log out
-      </Button>
+      </Button>)
     )
   }
 
@@ -70,7 +72,7 @@ const NavBar = () => {
       "&:hover .MuiOutlinedInput-notchedOutline": {
         borderColor: "white"
       },
-      width: "200px",
+      width: "245px",
     },
     option: {
       color: "black"
