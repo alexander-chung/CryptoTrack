@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useHistory } from "react-router-dom";
 import NavBar from './NavBar';
 import Coin from './Coin';
@@ -46,7 +46,7 @@ export default function MainPage({}) {
       setCoins(mainData.data)
       setLoading(false)
     }
-    fetchData()
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -66,6 +66,7 @@ export default function MainPage({}) {
       setLoading(false)
     }
     fetchData()
+
   }, [pageNumber])
 
   const sortByRank = (e) => {

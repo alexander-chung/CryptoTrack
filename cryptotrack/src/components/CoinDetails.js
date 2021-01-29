@@ -1,22 +1,87 @@
-import React from 'react'
+import React, { useState, useEffect,useContext, useRef } from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CurrencyConverter from './CurrencyConverter';
 import Button from '@material-ui/core/Button';
 import { useAuth0 } from '@auth0/auth0-react';
+import { UserContext } from "../UserContext";
+
 
 import { makeStyles } from "@material-ui/core/styles";
 
 
 export default function CoinDetails( {details}) {
+  const { userCoins, setUserCoins } = useContext(UserContext)
   const { user, isAuthenticated } = useAuth0();
+  const [userData, setUserData] = useState({})
+  
+  useEffect(() => {
+    if(isAuthenticated) {
+      const fetchUser = async () => {
+        const response = await fetch(`http://localhost:5000/getUserData/${user.sub}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await response.json();
+        return data;
+      }
 
+      const addUser = async () => {
+        const response = await fetch(`http://localhost:5000/addNewUser`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({"id": null, "auth0_id": user.sub, "coins": ""})
+        })
+        const data = await response.json();
+        return data
+      }
+      fetchUser()
+      .then(data => {
+        console.log(data[0])
+        if(data.length === 0){
+          console.log("yep new user alert")
+          addUser()
+          .then(setUserData({"id": null, "auth0_id": user.sub, "coins": ""})
+            .then(setUserCoins([])))
+        }else {
+          setUserData(data[0])
+          if(data[0].coins === ""){
+            setUserCoins([])
+          }else{
+            setUserCoins(data[0].coins.split(","))
+          }
+        }
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    const updateCoins = async () => {
+      const response = await fetch('http://localhost:5000/updateCoins', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"id": userData.id, "auth0_id": "", "coins": userCoins.join(",")})
+      })
+      const data = await response.json();
+      return data;
+    }
+    updateCoins()
+  }, [userCoins])
+
+  const addCoin = (e) => {
+    setUserCoins(userCoins.concat([details.id]))
+  }
 
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   const fnum = (x) => {
-    console.log("hello")
     if(isNaN(x)) return x;
   
     if(x < 9999) {
@@ -49,7 +114,6 @@ export default function CoinDetails( {details}) {
 
   const classes = useStyles()
 
-
   return (
     <>
     { details ?
@@ -61,7 +125,10 @@ export default function CoinDetails( {details}) {
               <img src={details.image} style={{height: '65px', width:'65px', marginLeft: '5px', marginRight: '10px'}}></img>
               <h1 style={{transform: 'translateY(10px)'}}>{details.name}</h1>
             </div>
-            <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true}>Add to my portfolio</Button>            
+            { userCoins.indexOf(details.id) > -1 ?
+            <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true} disabled={true}>Added to portfolio &#9989;</Button>
+            :  <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true} onClick={addCoin}>Add to my portfolio</Button>
+            }       
             <CurrencyConverter details={details}/>
           </div>
         </div>

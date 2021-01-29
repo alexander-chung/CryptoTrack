@@ -1,12 +1,16 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import NavBar from './NavBar';
-import './Portfolio.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import coinGecko from '../api/coinGecko';
 import Coin from './Coin';
+import { UserContext } from "../UserContext";
+
 import './MainPage.css';
+import './Portfolio.css';
 
 const Portfolio = () => {
+  const { userCoins, setUserCoins } = useContext(UserContext);
+
   const { user, isAuthenticated } = useAuth0();
   const [userData, setUserData] = useState({"id": -1, "auth0_id": "", "coins": ""});
   const [coins, setCoins] = useState([])
@@ -30,7 +34,7 @@ const Portfolio = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({"id": null, "auth0_id": user.sub, "coins": "bitcoin"})
+          body: JSON.stringify({"id": null, "auth0_id": user.sub, "coins": ""})
         })
         const data = await response.json();
         return data
@@ -41,9 +45,15 @@ const Portfolio = () => {
         if(data.length === 0){
           console.log("yep new user alert")
           addUser()
-          .then(setUserData({"id": null, "auth0_id": user.sub, "coins": ""}))
+          .then(setUserData({"id": null, "auth0_id": user.sub, "coins": ""})
+            .then(setUserCoins([])))
         }else {
           setUserData(data[0])
+          if(data[0].coins === ""){
+            setUserCoins([])
+          }else{
+            setUserCoins(data[0].coins.split(","))
+          }
         }
       })
 
