@@ -126,7 +126,7 @@ export default function CoinDetails( {details}) {
               <h1 style={{transform: 'translateY(10px)'}}>{details.name}</h1>
             </div>
             { userCoins.indexOf(details.id) > -1 ?
-            <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true} disabled={true}>Added to portfolio &#9989;</Button>
+            <Button classes={classes} variant="contained" title="Sign in to edit your portfolio" color="primary" disabled={isAuthenticated ? false : true} disabled={true}>Added to portfolio &#9989;</Button>
             :  <Button classes={classes} variant="contained" color="primary" disabled={isAuthenticated ? false : true} onClick={addCoin}>Add to my portfolio</Button>
             }       
             <CurrencyConverter details={details}/>
