@@ -49,6 +49,17 @@
   transform: translateX(15px);
 }
 
+.home-link {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  margin-right: 15px;
+}
+
+.home-link:hover {
+  color: #8dc647;
+}
+
 .portfolio-link {
   text-decoration: none;
   color: white;

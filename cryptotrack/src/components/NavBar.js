@@ -151,8 +151,9 @@ const NavBar = () => {
       <div className='nav-container' style={{display: 'flex', justifyContent: 'center', borderTop: 'solid 1px grey', borderBottom: 'solid 1px grey'}}>
         <div className='nav-bar-first'>
           <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div className='page-header' style={{cursor: 'pointer'}}onClick={returnToHome}>CryptoTracker</div>
+            <div className='page-header' style={{cursor: 'pointer'}}onClick={returnToHome}>CryptoTrack</div>
             <div className='link-bar'>
+              <Link to={"/"} className='home-link'>Home</Link>
               <Link to={"/portfolio"} className='portfolio-link'>My Portfolio</Link>
             </div>
           </div>
